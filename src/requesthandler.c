@@ -1,4 +1,5 @@
 #include "requesthandler.h"
+#include "error.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,10 +41,14 @@ int handle_request(int c_socket) {
   int buff_len = 4096;
   char buff[buff_len];
 
-  if (read_in(c_socket, buff, buff_len) != -1)
+  if (read_in(c_socket, buff, buff_len) != -1) {
     fprintf(stdout, "Received: %s\n", buff);
-  if(respond(c_socket, response) != -1)
+    error("Could not read from socket");
+  }
+
+  int resp;
+  if((resp=respond(c_socket, response)) != -1)
     fprintf(stdout, "Responded:\n\n %s\n", response);
 
-  return 1;
+  return resp;
 }
