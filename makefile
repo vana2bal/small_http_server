@@ -10,7 +10,7 @@ OBJDIR = ./build
 DEPDIR = $(OBJDIR)/.d
 
 # Defines Exec Name, Sources, Object Files and Make Dependance Files
-EXEC = $(BINDIR)/littleserver
+EXEC = $(BINDIR)/smallhttpserver
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 DEPS = $(SRCS:$(SRCDIR)/%.c=$(DEPDIR)/%.d)
@@ -36,7 +36,5 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.c $(DEPDIR)/%.d
 
 $(DEPDIR)/%.d: ;
 .PRECIOUS: $(DEPDIR)/%.d
-
-.PHONY
 
 -include $(DEPS)

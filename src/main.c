@@ -33,7 +33,7 @@ static void bind_to_port(int socket, int port) {
 
 int listener_d, connect_d;
 
-static char* pid_storage_file_path = "/run/littleserver/littleserver.pid";
+static char* pid_storage_file_path = "/run/smallhttpserver/smallhttpserver.pid";
 
 int main(int argc, char *argv[]) {
   struct sockaddr_storage client_addr;
