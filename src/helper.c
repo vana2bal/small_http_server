@@ -25,7 +25,7 @@ int read_line(int socket, void *vptr, int len) {
     } else {
       if (errno == EINTR)
         continue;
-      error("Error in read_line");
+      error("Error in read_line()");
     }
   }
   *buffer = 0;
@@ -40,4 +40,26 @@ int trim(char *buffer) {
   }
 
   return 0;
+}
+
+int write_line(int socket, void *vptr, int len) {
+  int nleft;
+  int nwritten;
+  const char *buffer;
+
+  buffer = vptr;
+  nleft = len;
+
+  while ( nleft > 0) {
+    if ( (nwritten = write(socket, buffer, nleft)) <= 0) {
+      if ( errno == EINTR )
+        nwritten = 0;
+      else
+        error("Error in write_line()");
+    }
+    nleft -= nwritten;
+    buffer += nwritten;
+  }
+
+  return len;
 }
