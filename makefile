@@ -26,6 +26,7 @@ LDFLAGS =
 COMPILE.c = $(CC) $(DEPFLAGS) $(CFLAGS) -I$(INCDIR) -o $@ -c
 POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 
+.PHONY : run
 run : $(EXEC)
 
 $(EXEC) : $(OBJS)
@@ -35,7 +36,29 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.c $(DEPDIR)/%.d
 		$(COMPILE.c) $<
 		$(POSTCOMPILE)
 
-$(DEPDIR)/%.d: ;
-.PRECIOUS: $(DEPDIR)/%.d
+$(DEPDIR)/%.d : ;
+.PRECIOUS : $(DEPDIR)/%.d
+
+.PHONY : clean
+clean :
+	rm -f $(OBJDIR)/*.o
+	rm -f $(DEPDIR)/*.d
+
+.PHONY : purge
+purge : clean
+		rm -f $(EXEC)
+
+.PHONY : rebuild
+rebuild : purge run
+
+.PHONY : help
+help:
+	@echo "Makefile for the small http server"
+	@echo "Options are:"
+	@echo ""
+	@echo "run:     Incremental build of the server"
+	@echo "clean:   Remove all object and deps files from build directory"
+	@echo "purge:   clean + remove already produced bin"
+	@echo "rebuild: purge + run"
 
 -include $(DEPS)

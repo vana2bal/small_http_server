@@ -1,3 +1,7 @@
+#include "signalhandler.h"
+#include "requesthandler.h"
+#include "error.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -5,9 +9,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include "error.h"
-#include "requesthandler.h"
-#include "signalhandler.h"
+
 
 static int open_listener_socket() {
         int s = socket(PF_INET, SOCK_STREAM, 0);
