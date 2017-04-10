@@ -18,8 +18,9 @@ $(shell mkdir -p $(DEPDIR)>/dev/null)
 
 # Flags used by the CC and the LC
 CFLAGS = -Wall -Werror -O3
-LDFLAGS =
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
+LDFLAGS =
+
 
 # Various commands
 COMPILE.c = $(CC) $(DEPFLAGS) $(CFLAGS) -I$(INCDIR) -o $@ -c
