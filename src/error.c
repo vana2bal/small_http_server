@@ -6,6 +6,6 @@
 #include <string.h>   /* for strerror */
 
 void error(char *msg) {
-	fprintf(stderr, "%s: %s\n", msg, strerror(errno));
-	exit(EXIT_FAILURE);
+        fprintf(stderr, "%s: %s\n", msg, strerror(errno));
+        exit(EXIT_FAILURE);
 }
