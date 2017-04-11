@@ -1,4 +1,5 @@
 #include "requesthandler.h"
+#include "httprequest.h"
 #include "helpers.h"
 #include "error.h"
 
@@ -20,14 +21,11 @@ static int respond(int socket, char *s) {
 static char* response = "HTTP/1.1 200 OK\r\nDate: Mon, 27 Jul 2009 12:28:53 GMT\r\nServer: My Little Server\r\nLast Modified: Mon, 27 Jul 2009 12:27:00 GMT\r\nContent-Length: 88\r\nContent-Type: text/html\r\nConnection: Closed\r\n\r\n<html><body><h1>Bonjour tout le monde</h1></body></html>\r\n";
 
 int handle_request(int c_socket) {
-        int buff_len = 4096;
-        char buff[buff_len];
 
-        do {
-                read_line(c_socket, buff, buff_len-1);
-                trim(buff);
-                fprintf(stdout, "%s\n",buff);
-        } while(buff[0] != '\0');
+        http_request request;
+
+        initHttpRequest(&request);
+        get_request(c_socket, &request);
 
         int resp;
         if((resp=respond(c_socket, response)) != -1)
