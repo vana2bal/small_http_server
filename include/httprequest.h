@@ -24,6 +24,7 @@ typedef struct Http_Request {
         char *referer;
         char *useragent;
         char *resource_name;
+        char * http_version;
         int status;
 } http_request;
 
