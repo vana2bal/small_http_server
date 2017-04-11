@@ -22,14 +22,16 @@ static char* response = "HTTP/1.1 200 OK\r\nDate: Mon, 27 Jul 2009 12:28:53 GMT\
 
 int handle_request(int c_socket) {
 
-        http_request request;
+        http_request *request;
 
-        initHttpRequest(&request);
-        get_request(c_socket, &request);
+        request = createHttpRequest();
+        get_request(c_socket, request);
+        freeHttpRequest(request);
 
         int resp;
         if((resp=respond(c_socket, response)) != -1)
                 fprintf(stdout, "Responded:\n\n %s\n", response);
+
 
         return resp;
 }

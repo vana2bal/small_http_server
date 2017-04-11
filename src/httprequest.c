@@ -1,5 +1,6 @@
 #include "httprequest.h"
 #include "helpers.h"
+#include "error.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -16,13 +17,19 @@ int get_request(int c_socket, http_request *request) {
 
         return 1;
 }
-void initHttpRequest(http_request *request) {
+
+http_request *createHttpRequest() {
+        http_request * request = (http_request *) malloc(sizeof(http_request));
+        if (request == NULL)
+                error("Problem while allocating memory in createHttpRequest()");
         request->referer = NULL;
         request->useragent = NULL;
         request->resource_name = NULL;
         request->method = UNSUPPORTED;
         request->status = 200;
+        return request;
 }
+
 void freeHttpRequest(http_request *request) {
         if (request->referer)
                 free(request->referer);
@@ -30,4 +37,5 @@ void freeHttpRequest(http_request *request) {
                 free(request->useragent);
         if (request->resource_name)
                 free(request->resource_name);
+        free(request);
 }
