@@ -11,27 +11,29 @@
 #define BUFF_MAX_LEN  4096
 
 
-/* utilities : should parse a string and update request if necessary*/
+/* utilities : should parse a string and update request if necessary
+   It returns 0 til everyting is fine with the upcoming request
+   It return -1 and update Request Status to 400 when something is wrong about
+   the request
+   It return -1 and update Request Status to 501 when the request method is not
+   supported */
 static int update_http_request(http_request * request, char * buff) {
 
         static int is_first_line = 1;
         int resource_len;
-        char *endptr;
+        char *endptr,*temp;
 
         if (is_first_line == 1) {
                 /* DECIPHER HTTP METHOD = FIRST WORD OF FIRST LINE */
                 if (!strncmp(buff, "GET", 3)) {
-                        fprintf(stdout, "GET: %s\n",buff);
                         request->method = GET;
                         buff += 4;
                 }
                 else if ( !strncmp(buff, "HEAD", 4))  {
-                        fprintf(stdout, "head: %s\n",buff);
                         request->method = HEAD;
                         buff += 5;
                 }
                 else {
-                        fprintf(stdout, "UNSUPPORTED: %s\n",buff);
                         request->method = UNSUPPORTED;
                         request->status = 501;
                         return -1;
@@ -49,7 +51,7 @@ static int update_http_request(http_request * request, char * buff) {
                 else
                         resource_len = endptr - buff;
                 if ( resource_len == 0 ) {
-                        request->status = 400;
+                        request->status = 400; // Bad request
                         return -1;
                 }
 
@@ -65,19 +67,65 @@ static int update_http_request(http_request * request, char * buff) {
                 if ( strstr(buff, "HTTP/") ) {
                         request->type = FULL;
                         endptr = strchr(buff, '/') + 1;
-                        if (endptr == NULL)
-                                error("Could not read HTTP protocol version");
-                        fprintf(stdout, "Http version: %s\n", endptr);
+                        if (endptr == NULL) {
+                                request->status = 400; // Bad request
+                                return -1;
+                        }
+
                         request->http_version = (char *) malloc((strlen(endptr) + 1) * sizeof(char));
                         if (request->http_version == NULL)
                                 error("Could not allocate memory for http_version");
-                        request->http_version = strncpy(request->http_version, endptr, strlen(endptr));
+                        strncpy(request->http_version, endptr, strlen(endptr));
                 } else
                         request->type = SIMPLE;
                 is_first_line = 0;
-        }
+                return 0;
+        } else {
+                /*We have more than one line thus we need to decipher headers
+                   and so on header are of the form NAME.HEADER:value, where
+                   NAME.HEADER does not contain any ':'
+                   Such that one can split the line with respect */
 
-        return 0;
+                endptr = strchr(buff, ':');
+                if (endptr == NULL) {
+                        request->status = 400;    // Bad request
+                        return -1;
+                }
+
+                // Comparison to UPPER CASE version of the incoming header is
+                // a lot safer !
+                temp = (char *) malloc( ((endptr - buff) + 1)* sizeof(char) );
+                if (temp == NULL)
+                        error("Could not allocate memory for header comparison");
+                strncpy(temp, buff, (endptr - buff));
+                to_upper(temp);
+
+                /*  Increment buffer so that it now points to the value.
+                   If there is no value, just return.                    */
+
+                buff = endptr + 1;
+                while ( *buff && isspace(*buff) )
+                        ++buff;
+                if ( *buff == '\0' )
+                        return 0;
+
+                /* now really compare the temp the temp str to the USER-AGENT...*/
+
+                if( !strcmp(temp, "USER-AGENT")) {
+                        request->useragent = (char *) malloc( (strlen(buff) + 1) * sizeof(char) );
+                        if (request->useragent == NULL)
+                                error("Could not allocate space for user-agent value");
+                        strcpy(request->useragent, buff);
+                } else if ( !strcmp(temp, "REFERER")) {
+                        request->referer = (char *) malloc( (strlen(buff) + 1) * sizeof(char) );
+                        if (request->referer == NULL)
+                                error("Could not allocate space for referer value");
+                        strcpy(request->referer, buff);
+                }
+
+                free(temp);
+                return 0;
+        }
 }
 
 int get_request(int c_socket, http_request *request) {

@@ -51,6 +51,9 @@ purge : clean
 .PHONY : rebuild
 rebuild : purge run
 
+.PHONY : tarball
+tarball:
+	tar -czf samllhttpserver.tar.gz $(SRCDIR) $(INCDIR) ./makefile
 .PHONY : help
 help:
 	@echo "Makefile for the small http server"

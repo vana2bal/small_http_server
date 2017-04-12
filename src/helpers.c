@@ -63,3 +63,11 @@ int write_line(int socket, void *vptr, int len) {
 
         return len;
 }
+
+int to_upper(char * str) {
+        while (*str) {
+                *str = toupper(*str);
+                str++;
+        }
+        return 0;
+}
