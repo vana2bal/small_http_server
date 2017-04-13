@@ -13,5 +13,5 @@ Up to know this is a server in barely working order. It can decipher HEAD and GE
   - text/html mime type (in fact can handle any type but will answer that the file mime type is text/html)
 
 + Todo
-  - add mime support
   - add configuration files
+  - add mime support
