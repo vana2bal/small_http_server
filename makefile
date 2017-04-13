@@ -10,7 +10,8 @@ OBJDIR = ./build
 DEPDIR = $(OBJDIR)/.d
 
 # Defines Exec Name, Sources, Object Files and Make Dependance Files
-EXEC = $(BINDIR)/smallhttpserver
+EXECNAME = smallhttpserver
+EXEC = $(BINDIR)/$(EXECNAME)
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 DEPS = $(SRCS:$(SRCDIR)/%.c=$(DEPDIR)/%.d)
@@ -53,7 +54,8 @@ rebuild : purge run
 
 .PHONY : tarball
 tarball:
-	tar -czf samllhttpserver.tar.gz $(SRCDIR) $(INCDIR) ./makefile
+	tar -czf $(EXECNAME).tar.gz $(SRCDIR) $(INCDIR) ./makefile
+
 .PHONY : help
 help:
 	@echo "Makefile for the small http server"
@@ -63,5 +65,6 @@ help:
 	@echo "clean:   Remove all object and deps files from build directory"
 	@echo "purge:   clean + remove already produced bin"
 	@echo "rebuild: purge + run"
+	@echo "tarball: tarball of sources includes and makefile"
 
 -include $(DEPS)
