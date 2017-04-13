@@ -121,6 +121,11 @@ static int update_http_request(http_request * request, char * buff) {
                         if (request->referer == NULL)
                                 error("Could not allocate space for referer value");
                         strcpy(request->referer, buff);
+                } else if ( !strcmp(temp, "EXPECT")) {
+                        request->expect = (char *) malloc( (strlen(buff) + 1) * sizeof(char) );
+                        if (request->expect == NULL)
+                                error("Could not allocate space for expect value");
+                        strcpy(request->expect, buff);
                 }
 
                 free(temp);

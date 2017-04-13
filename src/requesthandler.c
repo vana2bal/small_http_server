@@ -5,16 +5,20 @@
 #include <stdio.h>
 
 int handle_request(int c_socket) {
-        int resp;
         http_request *request;
 
         request = createHttpRequest();
-        get_request(c_socket, request);
 
-        fprintf(stdout, "USER-AGENT %s\n", request->useragent);
-        fprintf(stdout, "REFERER %s\n", request->referer );
-        resp = respond(c_socket, request);
+        if (get_request(c_socket, request) < 0) {
+                freeHttpRequest(request);
+                return -1;
+        }
+
+        if (respond(c_socket, request) < 0) {
+                freeHttpRequest(request);
+                return -1;
+        }
 
         freeHttpRequest(request);
-        return resp;
+        return 0;
 }

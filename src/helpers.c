@@ -1,10 +1,12 @@
 #include "helpers.h"
 #include "error.h"
 
-#include <unistd.h>
-#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <ctype.h>
 #include <errno.h>
+#include <string.h>
+ #include <unistd.h>
 
 int read_line(int socket, void *vptr, int len) {
         int n, rc;
@@ -70,4 +72,24 @@ int to_upper(char * str) {
                 str++;
         }
         return 0;
+}
+
+void clean_URL(char * buffer) {
+        char asciinum[3] = {0};
+        int i = 0, c;
+
+        while ( buffer[i] ) {
+                if ( buffer[i] == '+' )
+                        buffer[i] = ' ';
+                else if ( buffer[i] == '%' ) {
+                        asciinum[0] = buffer[i+1];
+                        asciinum[1] = buffer[i+2];
+                        buffer[i] = strtol(asciinum, NULL, 16);
+                        c = i+1;
+                        do {
+                                buffer[c] = buffer[c+2];
+                        } while ( buffer[2+(c++)] );
+                }
+                ++i;
+        }
 }
