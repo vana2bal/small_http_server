@@ -1,6 +1,6 @@
 /*
  *
- * A simple web server helpers.
+ * A simple web server helpers functions prototypes.
  *
  */
  #ifndef HELPERS_H
