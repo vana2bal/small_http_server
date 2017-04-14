@@ -44,6 +44,7 @@ void initialize_mime_type() {
         hashmap_put(mime_types, ".html", "text/html");
         hashmap_put(mime_types, ".css", "text/css");
         hashmap_put(mime_types, ".txt","text/plain");
+        hashmap_put(mime_types, ".xml", "text/xml");
 
         hashmap_put(mime_types, ".jpeg", "image/jpeg");
         hashmap_put(mime_types, ".jpg", "image/jpg");
