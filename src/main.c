@@ -1,5 +1,6 @@
 #include "signalhandler.h"
 #include "requesthandler.h"
+#include "mimetypes.h"
 #include "error.h"
 
 #include <stdio.h>
@@ -45,6 +46,8 @@ int main(int argc, char *argv[]) {
 
         setup_signal_handlers();
 
+        initialize_mime_type();
+
         puts("Opening listening socket");
         listener_d = open_listener_socket();
 
@@ -75,6 +78,7 @@ int main(int argc, char *argv[]) {
                                 if(close(connect_d) < 0)
                                         error("Error closing connection socket in child process.");
 
+                                freeMimeTypes();
                                 exit(EXIT_SUCCESS);
                         } else {
 
@@ -100,7 +104,9 @@ int main(int argc, char *argv[]) {
                         fclose(fd_pid);
                 }
 
+
                 puts("Service is up an running");
+                freeMimeTypes();
                 exit(EXIT_SUCCESS);
         }
 }

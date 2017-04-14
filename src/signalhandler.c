@@ -1,4 +1,5 @@
 #include "signalhandler.h"
+#include "mimetypes.h"
 #include "error.h"
 
 #include <stdio.h>
@@ -15,6 +16,8 @@ static void handle_shutdown(int sig)
                 close(listener_d);
         if (connect_d)
                 close(connect_d);
+
+        freeMimeTypes();
         fprintf(stdout, "Bye thanks for the ride!\n");
         exit(0);
 }
