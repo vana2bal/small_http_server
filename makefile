@@ -68,11 +68,12 @@ help:
 	@echo "Makefile for the small http server"
 	@echo "Options are:"
 	@echo ""
-	@echo "run:     Incremental build of the server"
-	@echo "debug:   Compliler with debug flag"
-	@echo "clean:   Remove all object and deps files from build directory"
-	@echo "purge:   clean + remove already produced bin"
-	@echo "rebuild: purge + run"
-	@echo "tarball: tarball of sources, includes, and makefile"
+	@echo "run:     			Incremental build of the server"
+	@echo "debug:   			Compliler with debug flag"
+	@echo "clean:   			Remove all object and deps files from build directory"
+	@echo "purge:   			clean + remove already produced bin"
+	@echo "rebuild: 			purge + run"
+	@echo "rebuild-debug: purge + debug"
+	@echo "tarball: 			tarball of sources, includes, and makefile"
 
 -include $(DEPS)
