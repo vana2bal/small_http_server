@@ -61,6 +61,6 @@ int http_error_msg(int socket, http_request * request) {
                         "</BODY>\n</HTML>\n");
                 write_line(socket, buffer, strlen(buffer));
         }
-
+        free(mime_type);
         return 0;
 }

@@ -55,7 +55,7 @@ static int update_http_request(http_request * request, char * buff) {
                         return -1;
                 }
 
-                request->resource_name = (char *) malloc((resource_len+1)*sizeof(char));
+                request->resource_name = (char *) calloc((resource_len+1),sizeof(char));
                 if (request->resource_name == NULL)
                         error("Error while allocating memory for resource_name in update_http_request()");
                 strncpy(request->resource_name, buff, resource_len);
@@ -72,7 +72,7 @@ static int update_http_request(http_request * request, char * buff) {
                                 return -1;
                         }
 
-                        request->http_version = (char *) malloc((strlen(endptr) + 1) * sizeof(char));
+                        request->http_version = (char *) calloc((strlen(endptr) + 1), sizeof(char));
                         if (request->http_version == NULL)
                                 error("Could not allocate memory for http_version");
                         strncpy(request->http_version, endptr, strlen(endptr));
@@ -94,7 +94,7 @@ static int update_http_request(http_request * request, char * buff) {
 
                 // Comparison to UPPER CASE version of the incoming header is
                 // a lot safer !
-                temp = (char *) malloc( ((endptr - buff) + 1)* sizeof(char) );
+                temp = (char *) calloc( ((endptr - buff) + 1), sizeof(char) );
                 if (temp == NULL)
                         error("Could not allocate memory for header comparison");
                 strncpy(temp, buff, (endptr - buff));
@@ -112,12 +112,12 @@ static int update_http_request(http_request * request, char * buff) {
                 /* now really compare the temp the temp str to the USER-AGENT...*/
 
                 if( !strcmp(temp, "USER-AGENT")) {
-                        request->useragent = (char *) malloc( (strlen(buff) + 1) * sizeof(char) );
+                        request->useragent = (char *) calloc( (strlen(buff) + 1), sizeof(char) );
                         if (request->useragent == NULL)
                                 error("Could not allocate space for user-agent value");
                         strcpy(request->useragent, buff);
                 } else if ( !strcmp(temp, "REFERER")) {
-                        request->referer = (char *) malloc( (strlen(buff) + 1) * sizeof(char) );
+                        request->referer = (char *) calloc( (strlen(buff) + 1), sizeof(char) );
                         if (request->referer == NULL)
                                 error("Could not allocate space for referer value");
                         strcpy(request->referer, buff);

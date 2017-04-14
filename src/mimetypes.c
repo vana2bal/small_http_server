@@ -10,18 +10,19 @@ map_t mime_types;
 char * default_mime = "application/octet-stream";
 
 char * decode_mime_type(char *resource_name) {
-        char* buff, *retour;
+        char *retour;
+        void *buff;
         char key[KEY_MAX_LENGTH];
         char * dot_ptr;
 
-        retour = (char *) malloc((VALUE_MAX_LENGTH + 1)*sizeof(char));
-
+        retour = (char *) calloc((VALUE_MAX_LENGTH + 1), sizeof(char));
         if (retour == NULL)
                 error("Could not allocate memory in decode_mime_type()");
+
         dot_ptr = strchr(resource_name, '.');
         if (dot_ptr != NULL) {
                 strcpy(key, dot_ptr);
-                hashmap_get(mime_types, key,(void**)&buff);
+                hashmap_get(mime_types, key, &buff);
         }
 
         if (buff != NULL) {

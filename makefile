@@ -18,7 +18,7 @@ DEPS = $(SRCS:$(SRCDIR)/%.c=$(DEPDIR)/%.d)
 $(shell mkdir -p $(DEPDIR)>/dev/null)
 
 # Flags used by the CC and the LC
-CFLAGS = -Wall -Werror -O3
+CFLAGS = -g -Wall -Werror -O3
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 LDFLAGS =
 
@@ -65,6 +65,6 @@ help:
 	@echo "clean:   Remove all object and deps files from build directory"
 	@echo "purge:   clean + remove already produced bin"
 	@echo "rebuild: purge + run"
-	@echo "tarball: tarball of sources includes and makefile"
+	@echo "tarball: tarball of sources, includes, and makefile"
 
 -include $(DEPS)
