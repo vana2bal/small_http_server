@@ -1,12 +1,12 @@
 # Small Http Server
 
 * ******************************************************************************
-* * DISCLAIMER: This is a toy project that I conducted for educational purposes*
-* * only ! This is no where from being a secure server. There is no security   *
-* * check what-soever. This code is provided as is and should not be used in   *
-* * production or even on a machine which can be accesible outside of your own *
-* * network. This goes without saying that this should not be used under any   *
-* * circonstance in a production environment.                                  *
+ DISCLAIMER: This is a toy project that I conducted for educational purposes
+ only ! This is no where from being a secure server. There is no security   
+ check what-soever. This code is provided as is and should not be used in   
+ production or even on a machine which can be accesible outside of your own
+ network. This goes without saying that this should not be used under any   
+ circonstance in a production environment.                                  
 * ******************************************************************************
 
 As mentionned in the disclaimer the Small Http Server is a Toy project. It's
