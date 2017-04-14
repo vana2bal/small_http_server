@@ -34,5 +34,5 @@ fi
 
 echo "Launching the server"
 echo""
-start_cmd="$BIN_DIR/$EXEC"
+start_cmd="valgrind --leak-check=full --track-origins=yes --trace-children=yes $BIN_DIR/$EXEC"
 eval $start_cmd

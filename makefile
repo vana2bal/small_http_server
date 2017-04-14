@@ -30,6 +30,10 @@ POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 .PHONY : run
 run : $(EXEC)
 
+.PHONY: debug
+debug: CFLAGS += -g
+debug : $(EXEC)
+
 $(EXEC) : $(OBJS)
 	$(LC) -o $@ $^ $(LDFLAGS)
 
@@ -52,6 +56,9 @@ purge : clean
 .PHONY : rebuild
 rebuild : purge run
 
+.PHONY : rebuild-debug
+rebuild-debug : purge debug
+
 .PHONY : tarball
 tarball:
 	tar -czf $(EXECNAME).tar.gz $(SRCDIR) $(INCDIR) ./makefile
@@ -62,6 +69,7 @@ help:
 	@echo "Options are:"
 	@echo ""
 	@echo "run:     Incremental build of the server"
+	@echo "debug:   Compliler with debug flag"
 	@echo "clean:   Remove all object and deps files from build directory"
 	@echo "purge:   clean + remove already produced bin"
 	@echo "rebuild: purge + run"
