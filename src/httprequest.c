@@ -122,7 +122,7 @@ static int update_http_request(http_request * request, char * buff) {
                                 error("Could not allocate space for referer value");
                         strcpy(request->referer, buff);
                 } else if ( !strcmp(temp, "EXPECT")) {
-                        request->expect = (char *) malloc( (strlen(buff) + 1) * sizeof(char) );
+                        request->expect = (char *) calloc( (strlen(buff) + 1),  sizeof(char) );
                         if (request->expect == NULL)
                                 error("Could not allocate space for expect value");
                         strcpy(request->expect, buff);
@@ -189,13 +189,14 @@ http_request *createHttpRequest() {
 }
 
 void freeHttpRequest(http_request *request) {
-        if (request->referer)
-                free(request->referer);
-        if (request->useragent)
-                free(request->useragent);
-        if (request->resource_name)
-                free(request->resource_name);
-        if (request->http_version)
-                free(request->http_version);
-        free(request);
+        http_request * temp = request;
+        if (temp->referer)
+                free(temp->referer);
+        if (temp->useragent)
+                free(temp->useragent);
+        if (temp->resource_name)
+                free(temp->resource_name);
+        if (temp->http_version)
+                free(temp->http_version);
+        free(temp);
 }
